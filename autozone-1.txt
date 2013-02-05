@@ -1,0 +1,19 @@
+#<Mechanize::Page:0x2c62a70>
+x-powered-by
+Servlet 2.5; JBoss-5.0/JBossWeb-2.1
+x-atg-version
+version=QVRHUGxhdGZvcm0vMTAuMCBbIFBsYXRmb3JtTGljZW5zZS8wIEFCVGVzdExpY2Vuc2UvMCBEQ1NBQlRlc3RMaWNlbnNlLzAgQjJDTGljZW5zZS8wICBd
+content-type
+text/html;charset=ISO-8859-1
+vary
+Accept-Encoding
+cache-control
+private
+content-encoding
+gzip
+content-length
+18217
+date
+Fri, 14 Dec 2012 07:25:30 GMT
+connection
+keep-alive
