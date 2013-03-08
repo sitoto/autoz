@@ -1,6 +1,6 @@
 Crawler from AutoZone
 
-分析\实现  采集流程、步骤
+Steps
 
 1.Search "55036",
   http://www.autozone.com/autozone/catalog/search/searchResults.jsp?searchText=55036&x=20&y=14
