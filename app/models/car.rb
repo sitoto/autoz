@@ -9,5 +9,6 @@
   field :tip, 		type: String		#example: "autozone" , "aap", "bitauto"
   field :ymme						# autozone's number for this car
   
+  
 end
 
