@@ -71,6 +71,9 @@ class MultipleCrawler
 	#处理采集的参数
 	def process
 		#start_time = Time.now
+		
+		# 一个验证 提交一次，
+		
 		# not fit
 		#select_car_url = "http://www.autozone.com/autozone/ymme/selector.jsp;jsessionid=B10B361606FD0DB6084BBBB62AF372F6.diyprod2-b2c4?ymme=32184001"
 		#product_url  = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=186287_0_0_"
