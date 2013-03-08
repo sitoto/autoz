@@ -1,0 +1,59 @@
+require 'spec_helper'
+
+def assert_str(init_num, result_str)
+      fetch = Fetch.new(init_num)
+      fetch.search_url.should == result_str
+end
+
+def assert_product_url(init_num, result_str)
+      fetch = Fetch.new(init_num)
+      fetch.product_url.should == result_str
+end
+
+describe Fetch do
+  context " get search  " do
+    it "55036" do 
+      assert_str('55036',"http://www.autozone.com/autozone/catalog/search/searchResults.jsp?searchText=55036&x=0&y=0")
+    end
+
+    it "5580" do
+      assert_str(5580, "http://www.autozone.com/autozone/catalog/search/searchResults.jsp?searchText=5580&x=0&y=0")
+    end
+  end
+
+  context "product's url" do
+    it "55036" do
+      assert_product_url('55036', "http://www.autozone.com/autozone/parts/Exhaust-Pipe/_/N-963dk?filterByKeyWord=55036&fromString=search&isSearchByPartNumber=true")
+    end
+   it "5580" do
+	   []
+      assert_product_url('5580', "http://www.autozone.com/autozone/parts/Brake-Rotor-Rear/_/N-8knrr?filterByKeyWord=5580&fromString=search&isSearchByPartNumber=true")
+    end
+
+    it "55040" do
+      assert_product_url('55040', "http://www.autozone.com/autozone/parts/Brake-Rotor-Rear/_/N-8knrr?filterByKeyWord=55040&fromString=search&isSearchByPartNumber=true")
+    end 
+  end
+  
+  context "products's list" do
+    it "55036" do
+      fetch = Fetch.new("55036")
+      fetch.product_urls.should == ["http://www.autozone.com/autozone/parts/Brake-Rotor-Front/_/N-8knrq?filterByKeyWord=55036&fromString=search&isSearchByPartNumber=true", "http://www.autozone.com/autozone/parts/Brake-Rotor-Rear/_/N-8knrr?filterByKeyWord=55036&fromString=search&isSearchByPartNumber=true"]
+
+    end
+  end
+  
+  context "get item urls " do
+    it "55036-first" do
+      fetch = Fetch.new("55036", "http://www.autozone.com/autozone/parts/Brake-Rotor-Front/_/N-8knrq?filterByKeyWord=55036&fromString=search&isSearchByPartNumber=true")
+      
+      fetch.product_items.should == ["http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Front/_/N-8knrq?itemIdentifier=186285_0_0_"]
+    end
+    it "8975C" do 
+      fetch = Fetch.new("8975C", "http://www.autozone.com/autozone/parts/Brake-Drum-Front/_/N-8knr7?filterByKeyWord=8975C&fromString=search&fromType=oem")
+      fetch.product_items.should == ["http://www.autozone.com/autozone/parts/Duralast-Brake-Drum-Front/_/N-8knr7?itemIdentifier=48988_0_0_" , "http://www.autozone.com/autozone/parts/Duralast-Brake-Drum-Front/_/N-8knr7?itemIdentifier=48988_0_0_"]
+    end
+  end
+
+
+end
