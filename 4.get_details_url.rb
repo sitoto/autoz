@@ -86,6 +86,7 @@ class MultipleCrawler
 		cars = Car.where(year: "2013")
 		max_cars =  cars.length
 		cars.each_with_index do |car, i|
+next if i < 94
 			select_car_url = car.ymme
 			page_result = Crawler.new().fetch(select_car_url, product_url)
 			
