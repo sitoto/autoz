@@ -53,7 +53,7 @@ class MultipleCrawler
 		def fetch(select_car_url, product_url)
 			@agent.get(select_car_url)
 			page_new = @agent.get(product_url)
-			page_new.links.find{|l| l.text.strip == 'View similar parts that fit your vehicle'}
+			
 		end
 	end # end class Crawler
 	
@@ -83,10 +83,37 @@ class MultipleCrawler
 		select_car_url = "http://www.autozone.com/autozone/ymme/selector.jsp;jsessionid=83C237E4BE0538B91954BFEC9725CDF8.diyprod3-b2c5?ymme=32934001"
 		product_url  = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=186287_0_0_"
 		# end fit
-		if Crawler.new().fetch(select_car_url, product_url)
-			puts "not  fit"
-		else
-			puts "fit" 
+		cars = Car.where(year: "2013")
+		puts cars.length
+		cars.each do |car|
+			select_car_url = car.ymme
+			page_result = Crawler.new().fetch(select_car_url, product_url)
+			
+			if page_result.links.find{|l| l.text.strip == 'View similar parts that fit your vehicle'}
+				puts "not  fit"
+				#puts page_result.search("//span[@class = 'part-number']").text.strip
+				#puts page_result.search("//span[@class = 'alt-part-number']").text.strip
+			else
+				#save this fit result
+				puts "fit" 
+				puts part_no =  page_result.search("//span[@class = 'part-number']").text.strip
+				puts alternate_part_no   = page_result.search("//span[@class = 'alt-part-number']").text.strip
+
+				product = Product.new
+				product.part_no = part_no
+				product.alternate_part_no = alternate_part_no
+				product.year = car.year
+				product.maker = maker
+#				product.type  = 
+				product.model = model
+				product.engine = engine
+				product.product_url = product_url
+				product.car_url = select_car_url
+				product.tip = "autozone"
+				
+				product.save
+			end
+			break
 		end
 	end #end process
 	
