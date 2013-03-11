@@ -84,18 +84,18 @@ class MultipleCrawler
 		product_url  = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=186287_0_0_"
 		# end fit
 		cars = Car.where(year: "2013")
-		puts cars.length
-		cars.each do |car|
+		max_cars =  cars.length
+		cars.each_with_index do |car, i|
 			select_car_url = car.ymme
 			page_result = Crawler.new().fetch(select_car_url, product_url)
 			
 			if page_result.links.find{|l| l.text.strip == 'View similar parts that fit your vehicle'}
-				puts "not  fit"
+				puts "#{i}/#{max_cars}not  fit"
 				#puts page_result.search("//span[@class = 'part-number']").text.strip
 				#puts page_result.search("//span[@class = 'alt-part-number']").text.strip
 			else
 				#save this fit result
-				puts "fit" 
+				puts "#{i}/#{max_cars}fit" 
 				puts part_no =  page_result.search("//span[@class = 'part-number']").text.strip
 				puts alternate_part_no   = page_result.search("//span[@class = 'alt-part-number']").text.strip
 
