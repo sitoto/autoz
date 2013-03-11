@@ -113,7 +113,7 @@ class MultipleCrawler
 				
 				product.save
 			end
-			break
+			#break
 		end
 	end #end process
 	
