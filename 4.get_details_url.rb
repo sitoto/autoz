@@ -93,6 +93,8 @@ class MultipleCrawler
 				puts "#{i}/#{max_cars}not  fit"
 				#puts page_result.search("//span[@class = 'part-number']").text.strip
 				#puts page_result.search("//span[@class = 'alt-part-number']").text.strip
+				
+				#增加 未选中 车型的情况。（也要记录到数据库）需要更新该条记录。
 			else
 				#save this fit result
 				puts "#{i}/#{max_cars}fit" 
