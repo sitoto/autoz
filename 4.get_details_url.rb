@@ -103,10 +103,10 @@ class MultipleCrawler
 				product.part_no = part_no
 				product.alternate_part_no = alternate_part_no
 				product.year = car.year
-				product.maker = maker
+				product.maker = car.maker
 #				product.type  = 
-				product.model = model
-				product.engine = engine
+				product.model = car.model
+				product.engine = car.engine
 				product.product_url = product_url
 				product.car_url = select_car_url
 				product.tip = "autozone"
