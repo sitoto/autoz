@@ -110,7 +110,7 @@ next if i < 94
 				product.engine = car.engine
 				product.product_url = product_url
 				product.car_url = select_car_url
-				product.tip = "autozone"
+				#product.tip = "autozone"
 				
 				product.save
 			end
