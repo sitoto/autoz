@@ -99,6 +99,12 @@ class MultipleCrawler
 			#elsif page_result.links.find{|l| l.text.strip == 'View similar parts that fit your vehicle'}
 			elsif page_result.search("//img[@id = 'bannerRightPart']").length > 0
 				puts "no vehicle"
+				product = Product.new
+				product.part_no = "no vehicle"
+				product.product_url = product_url
+				product.car_url = select_car_url
+				product.save
+				
 			else
 				#save this fit result
 				puts "#{i}/#{max_cars}fit" 
