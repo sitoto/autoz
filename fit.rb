@@ -89,6 +89,8 @@ class Fit
     page_new = @agent.get(@product_url) 
     #pp page_new.search("//div[@class = 'wrapper']")
     #page_new.search("//div[@class = 'wrapper']") #return []
+
+	
     page_new.links.find{|l| l.text.strip == 'View similar parts that fit your vehicle'}
    
   end
