@@ -95,6 +95,10 @@ class MultipleCrawler
 				#puts page_result.search("//span[@class = 'alt-part-number']").text.strip
 				
 				#增加 未选中 车型的情况。（也要记录到数据库）需要更新该条记录。
+				
+			#elsif page_result.links.find{|l| l.text.strip == 'View similar parts that fit your vehicle'}
+			elsif page_result.search("//img[@id = 'bannerRightPart']").length > 0
+				puts "no vehicle"
 			else
 				#save this fit result
 				puts "#{i}/#{max_cars}fit" 
