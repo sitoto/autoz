@@ -1,12 +1,7 @@
-# Logfile created on 2012-12-11 17:06:15 +0800 by logger.rb/31641
-try
-try2
-#<NoMethodError: undefined method `strip' for nil:NilClass>
-#<NoMethodError: undefined method `strip' for nil:NilClass>
-#<NoMethodError: undefined method `strip' for nil:NilClass>
-#<NoMethodError: undefined method `strip' for nil:NilClass>
-#<NoMethodError: undefined method `strip' for nil:NilClass>
-#<NameError: undefined local variable or method `heaers' for #<MultipleCrawler::Crawler:0x3cf4290>>
-#<NoMethodError: undefined method `strip' for nil:NilClass>
-#<NoMethodError: undefined method `strip' for nil:NilClass>
-#<NoMethodError: undefined method `strip' for nil:NilClass>
+# Logfile created on 2013-03-15 10:41:29 +0800 by logger.rb/31641
+503 => Net::HTTPServiceUnavailable for http://www.autozone.com/autozone/ymme/selector.jsp;jsessionid=547BBDDD4828E9785647223865B846D2.diyprod2-b2c3?ymme=32340103 -- unhandled response
+503 => Net::HTTPServiceUnavailable for http://www.autozone.com/autozone/ymme/selector.jsp;jsessionid=588F7BD8317BD2365CC460A49680512B.diyprod3-b2c6?ymme=32336803 -- unhandled response
+503 => Net::HTTPServiceUnavailable for http://www.autozone.com/autozone/ymme/selector.jsp?ymme=32354402 -- unhandled response
+503 => Net::HTTPServiceUnavailable for http://www.autozone.com/autozone/ymme/selector.jsp;jsessionid=93031114BF6C3140BA70486521313838.diyprod2-b2c12?ymme=32353401 -- unhandled response
+503 => Net::HTTPServiceUnavailable for http://www.autozone.com/autozone/ymme/selector.jsp;jsessionid=EB0C1CFA0F87758C9F6192A4C2BA398A.diyprod4-b2c14?ymme=31955101 -- unhandled response
+503 => Net::HTTPServiceUnavailable for http://www.autozone.com/autozone/ymme/selector.jsp;jsessionid=3717A9393372F1258B4C47A638880A61.diyprod2-b2c12?ymme=31041705 -- unhandled response

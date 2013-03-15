@@ -69,7 +69,7 @@ class MultipleCrawler
 	
 	#处理采集的参数
 	def process
-		#start_time = Time.now
+		start_time = Time.now
 		
 		# 一个验证 提交一次，
 		
@@ -79,10 +79,10 @@ class MultipleCrawler
 		# end not fit
 		
 		# fit
-
-		product_url  = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=186287_0_0_"
+product_url = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=112433_0_0_"
+#		product_url  = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=186287_0_0_"
 		# end fit
-		2006.downto(1996) do |y|
+		1998.downto(1985) do |y|
 		y = y.to_s 
 		cars = Car.where(year: y)
 		max_cars =  cars.length
@@ -132,6 +132,7 @@ class MultipleCrawler
 			#break
 			end #end of years
 		end
+puts "#{'%.4f' % (Time.now - start_time)}s."
 	end #end process
 	
 	
