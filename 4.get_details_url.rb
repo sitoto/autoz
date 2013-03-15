@@ -79,7 +79,15 @@ class MultipleCrawler
 		# end not fit
 		
 		# fit
-product_url = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=112433_0_0_"
+
+
+product_url = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Front/_/N-8knrq?itemIdentifier=112524_0_0_"
+
+#http://www.autozone.com/autozone/parts/Duralast-Brake-Drum-Front/_/N-8knr7?itemIdentifier=113322_0_0_
+
+#http://www.autozone.com/autozone/parts/Duralast-Brake-Drum-Front/_/N-8knr7?itemIdentifier=113326_0_0_
+
+
 #		product_url  = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=186287_0_0_"
 		# end fit
 		1998.downto(1985) do |y|
