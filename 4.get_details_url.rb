@@ -5,7 +5,8 @@ require 'nokogiri'
 require 'open-uri'
 require 'logger'
 require 'pp'
-require 'mechanize'  #用来模拟用户、浏览器行为
+require 'mechanize'  #simulate the browser
+require 'forkmanager'		# gem install parallel-forkmanager
 
 require_relative 'lists'
 require_relative 'file_io'
@@ -18,7 +19,7 @@ Dir.glob("#{File.dirname(__FILE__)}/app/models/*.rb") do |lib|
 end
 
 #ENV['MONGOID_ENV'] = 'local_dev' 	#127.0.0.1:27017
-ENV['MONGOID_ENV'] = 'dev'  		#211.101.12.237:27017
+ENV['MONGOID_ENV'] = 'dev'  		#192.168.2.14:27017
 
 Mongoid.load!("config/mongoid.yml")
 
@@ -30,7 +31,6 @@ class MultipleCrawler
 			@agent.max_history = 4 
 			@agent.user_agent_alias = "Windows IE 9"
 			
-
 			@logger = Logger.new('log.log', 'daily')
 			
 		end #end initialize
@@ -67,80 +67,82 @@ class MultipleCrawler
 		create_file_to_write("autozone")
 	end
 	
-	#处理采集的参数
+	#
 	def process
 		start_time = Time.now
-		
-		# 一个验证 提交一次，
-		
-		# not fit
-		#select_car_url = "http://www.autozone.com/autozone/ymme/selector.jsp;jsessionid=B10B361606FD0DB6084BBBB62AF372F6.diyprod2-b2c4?ymme=32184001"
-		#product_url  = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=186287_0_0_"
-		# end not fit
-		
-		# fit
 
-
-product_url = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Front/_/N-8knrq?itemIdentifier=112524_0_0_"
-
-#http://www.autozone.com/autozone/parts/Duralast-Brake-Drum-Front/_/N-8knr7?itemIdentifier=113322_0_0_
-
+product_url = "http://www.autozone.com/autozone/parts/Duralast-Brake-Drum-Front/_/N-8knr7?itemIdentifier=113322_0_0_"
 #http://www.autozone.com/autozone/parts/Duralast-Brake-Drum-Front/_/N-8knr7?itemIdentifier=113326_0_0_
 
+		@pm_max = 10
+		pfm = Parallel::ForkManager.new(@pm_max)
+		
+		2013.downto(1985) do |y|
+			y = y.to_s 
+			cars = Car.where(year: y)
+			max_cars =  cars.length
+			cars.each_with_index do |car, i|
+				#next if i < 1332
+				#
+				begin
+					pfm.start(car) and next
+					
+					select_car_url = car.ymme
+					page_result = Crawler.new().fetch(select_car_url, product_url)
+					status = 0
+					next if page_result.nil?
+					
+					if page_result.links.find{|l| l.text.strip == 'View similar parts that fit your vehicle'}
+						puts s1 =  "#{y}/#{i}/#{max_cars}\t not  fit"
+						@file_to_write.puts s1
+						
+					elsif page_result.search("//img[@id = 'bannerRightPart']").length > 0
+						puts s1 =  "#{y}/#{i}/#{max_cars}\t no vehicle"
+						@file_to_write.puts  "#{y}\t#{i}\t#{product_url}\t#{select_car_url}"
+						
+						product = Product.new
+						product.part_no = "no vehicle"
+						product.product_url = product_url
+						product.car_url = select_car_url
+						product.save
+						
+					else 
+						puts s1 =  "#{y}/#{i}/#{max_cars}\t fit"
+						@file_to_write.puts s1
+						puts part_no =  page_result.search("//span[@class = 'part-number']").text.strip
+						puts alternate_part_no   = page_result.search("//span[@class = 'alt-part-number']").text.strip
 
-#		product_url  = "http://www.autozone.com/autozone/parts/Duralast-Brake-Rotor-Rear/_/N-8knrr?itemIdentifier=186287_0_0_"
-		# end fit
-		1998.downto(1985) do |y|
-		y = y.to_s 
-		cars = Car.where(year: y)
-		max_cars =  cars.length
-		cars.each_with_index do |car, i|
-			#next if i < 1332
-			select_car_url = car.ymme
-			page_result = Crawler.new().fetch(select_car_url, product_url)
-			next if page_result.nil?
-			
-			if page_result.links.find{|l| l.text.strip == 'View similar parts that fit your vehicle'}
-				puts s1 =  "#{y}/#{i}/#{max_cars}\t not  fit"
-				@file_to_write.puts s1
-				
-			elsif page_result.search("//img[@id = 'bannerRightPart']").length > 0
-				puts s1 =  "#{y}/#{i}/#{max_cars}\t no vehicle"
-				@file_to_write.puts  "#{y}\t#{i}\t#{product_url}\t#{select_car_url}"
-				
-				product = Product.new
-				product.part_no = "no vehicle"
-				product.product_url = product_url
-				product.car_url = select_car_url
-				product.save
-				
-			else #if page_result.search("//div[@class = 'wrapper']").length > 0
-				#save this fit result
-				puts s1 =  "#{y}/#{i}/#{max_cars}\t fit"
-				@file_to_write.puts s1
-				puts part_no =  page_result.search("//span[@class = 'part-number']").text.strip
-				puts alternate_part_no   = page_result.search("//span[@class = 'alt-part-number']").text.strip
-
-				product = Product.new
-				product.part_no = part_no
-				product.alternate_part_no = alternate_part_no
-				product.year = car.year
-				product.maker = car.maker
-#				product.type  = 
-				product.model = car.model
-				product.engine = car.engine
-				product.product_url = product_url
-				product.car_url = select_car_url
-				#product.tip = "autozone"
-				
-				product.save
-			#else
-			#	@file_to_write.puts "some other unknow result!!!!"
-			end
-			#break
-			end #end of years
-		end
-puts "#{'%.4f' % (Time.now - start_time)}s."
+						product = Product.new
+						product.part_no = part_no
+						product.alternate_part_no = alternate_part_no
+						product.year = car.year
+						product.maker = car.maker
+		#				product.type  = 
+						product.model = car.model
+						product.engine = car.engine
+						product.product_url = product_url
+						product.car_url = select_car_url
+						#product.tip = "autozone"
+						
+						product.save
+						
+					
+					end # end of if
+					status = 200
+				rescue
+					print "Connection to ... had an unspecified error!\n"
+					pfm.finish(255)
+				end # end of begin
+				if status.to_i == 200
+					pfm.finish(0) # exit the forked process with this status
+				else
+					pfm.finish(255) # exit the forked process with this status
+				end
+				#break
+				end #end of cars
+			end  # end of years
+		
+		puts "#{'%.4f' % (Time.now - start_time)}s."
 	end #end process
 	
 	
