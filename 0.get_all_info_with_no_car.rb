@@ -90,7 +90,8 @@ class MultipleCrawler
 					
 					status = 200
 				rescue
-					print "Connection to ... had an unspecified error!\n"
+					#print "Connection to ... had an unspecified error!\n"
+					print $!
 					pfm.finish(255)
 				end # end of begin
 				if status.to_i == 200
