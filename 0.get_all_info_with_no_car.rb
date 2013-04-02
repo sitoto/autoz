@@ -86,7 +86,7 @@ class MultipleCrawler
 					
 					info.specification = page_result.at_xpath("//table[@id = 'prodspecs']").to_s
 					info.product_url = url
-					info.svae
+					info.save
 					
 					status = 200
 				rescue
