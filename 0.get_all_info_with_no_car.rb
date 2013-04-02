@@ -82,7 +82,7 @@ class MultipleCrawler
 					info = Info.new
 					
 					puts info.part_no =  page_result.at_xpath("//span[@class = 'part-number']").text.strip.split(':')[1].strip
-					info.alternate_part_no   = page_result.at_xpath("//span[@class = 'alt-part-number']").text.strip.split(':')[1].strip
+					#info.alternate_part_no   = page_result.at_xpath("//span[@class = 'alt-part-number']").text.strip.split(':')[1].strip
 					
 					info.specification = page_result.at_xpath("//table[@id = 'prodspecs']").to_s
 					info.product_url = url
