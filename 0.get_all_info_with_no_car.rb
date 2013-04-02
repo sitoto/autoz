@@ -73,7 +73,7 @@ class MultipleCrawler
 				
 				begin
 					pfm.start(url) and next
-					
+					puts url
 					product_url = url
 					page_result = Crawler.new().fetch(product_url)
 					status = 0
