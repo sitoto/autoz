@@ -5,7 +5,6 @@ require 'nokogiri'
 require 'open-uri'
 require 'logger'
 require 'pp'
-require 'forkmanager'		# gem install parallel-forkmanager
 
 require_relative 'lists'
 require_relative 'file_io'
@@ -65,40 +64,32 @@ class MultipleCrawler
 	
 	def process
 		start_time = Time.now
-		@pm_max = 10
-		pfm = Parallel::ForkManager.new(@pm_max)
-		
+	
 		@websites.each do  |url, i|
 				#next if i < 1332
-				
 				begin
-					pfm.start(url) and next
+
 					puts url
 					product_url = url
 					page_result = Crawler.new().fetch(product_url)
 					status = 0
 					next if page_result.nil?
-					
 					info = Info.new
 					
 					puts info.part_no =  page_result.at_xpath("//span[@class = 'part-number']").text.strip.split(':')[1].strip
-					info.alternate_part_no   = page_result.at_xpath("//span[@class = 'alt-part-number']").text.strip.split(':')[1].strip
+					puts info.alternate_part_no   = page_result.at_xpath("//span[@class = 'alt-part-number']").text.strip.split(':')[1].strip
 					
-					info.specification = page_result.at_xpath("//table[@id = 'prodspecs']").to_s
+					puts info.specification = page_result.at_xpath("//table[@id = 'prodspecs']").to_s
 					info.product_url = url
 					info.svae
 					
-					status = 200
+					
 				rescue
 					print "Connection to ... had an unspecified error!\n"
-					pfm.finish(255)
+					print $!
 				end # end of begin
-				if status.to_i == 200
-					pfm.finish(0) # exit the forked process with this status
-				else
-					pfm.finish(255) # exit the forked process with this status
-				end
-				#break
+
+				break
 			end  # end of  websites
 		
 		puts "#{'%.4f' % (Time.now - start_time)}s."

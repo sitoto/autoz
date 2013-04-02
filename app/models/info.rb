@@ -1,4 +1,4 @@
-﻿class Product
+﻿class Info
   include Mongoid::Document
   include Mongoid::Timestamps
   
