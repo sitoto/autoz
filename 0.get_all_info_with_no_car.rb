@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'logger'
 require 'pp'
+require 'forkmanager'		# gem install parallel-forkmanager
 
 require_relative 'lists'
 require_relative 'file_io'
@@ -25,9 +26,6 @@ class MultipleCrawler
 
 	class Crawler
 		def initialize
-			@agent = Mechanize.new
-			@agent.max_history = 4 
-			@agent.user_agent_alias = "Windows IE 9"
 			
 			@logger = Logger.new('log.log', 'daily')
 			
