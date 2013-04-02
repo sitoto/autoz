@@ -73,7 +73,7 @@ class MultipleCrawler
 				
 				begin
 					pfm.start(url) and next
-					puts url
+					
 					product_url = url
 					page_result = Crawler.new().fetch(product_url)
 					status = 0
@@ -92,6 +92,7 @@ class MultipleCrawler
 				rescue
 					#print "Connection to ... had an unspecified error!\n"
 					print $!
+					puts url
 					pfm.finish(255)
 				end # end of begin
 				if status.to_i == 200
@@ -101,8 +102,16 @@ class MultipleCrawler
 				end
 				#break
 			end  # end of  websites
+		begin 
+			print "wait for all children!\n"
+			pfm.wait_all_children		# wait for all children finish 
+		rescue SystemExit, Interrupt	# ctrl + c  interrupt
+			print "!!!!Interrupt wait all children!!!!\n"
+		ensure
+			print "#{'%.4f' % (Time.now - start_time)}s."
+			#print "Process end, total: #{@links.size}, crawled: #{@success_time}, time: #{'%.4f' % (Time.now - start_time)}s.\n"
+		end		
 		
-		puts "#{'%.4f' % (Time.now - start_time)}s."
 	end #end process
 	
 	
